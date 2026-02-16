@@ -17,76 +17,68 @@
   <link rel="stylesheet" href="css/heroes.css">
   <script src="js/common.js"></script>
 </head>
-<body>
-  <div class="max-w-[1500px] mx-auto bg-white rounded shadow p-2 flex flex-col sm:flex-row gap-2">
-    <div class="flex-1 bg-white rounded p-2 space-y-4 shadow">
-      <div class="bg-gray-100 p-2 font-sans text-sm">
-        <div class="bg-white p-4 rounded-xl shadow-md space-y-4">
-          <h1 class="text-2xl font-bold text-gray-800">🧝 영웅장비[마스터리]</h1>
+<body class="bg-gray-100 p-2 font-sans text-sm">
+  <div class="max-w-[1500px] mx-auto bg-white p-3 rounded-xl shadow-md">
+		<h1 class="text-2xl font-bold text-gray-800">🧝 영웅장비[마스터리]</h1>
 
-          <div class="text-gray-600 text-sm">
-            <p>현재레벨과 목표레벨을 선택하면, 업그레이드에 필요한 자원(마스터리석/레전드 장비)을 계산합니다.</p>
-            <p>각 항목의 ‘필요 합계’는 레벨 선택 시 자동 갱신됩니다. </p>
-            <p>각 항목별로 체크를 하면 체크항목별 필요합계를 더하여 총합계에 표시됩니다.</p>
-          </div>
+		<div class="text-gray-600 text-sm">
+			<p>현재레벨과 목표레벨을 선택하면, 업그레이드에 필요한 자원(마스터리석/레전드 장비)을 계산합니다.</p>
+			<p>각 항목의 ‘필요 합계’는 레벨 선택 시 자동 갱신됩니다. </p>
+			<p>각 항목별로 체크를 하면 체크항목별 필요합계를 더하여 총합계에 표시됩니다.</p>
+		</div>
 
-          <!-- ===================== 📙 마스터리 ===================== -->
-					<form id="masteryForm" class="space-y-3">
-						<div class="mb-4 flex items-center justify-start gap-2 w-full">
-							<label class="text-sm font-medium whitespace-nowrap">발레리아</label>
-							<select id="chkExpertV" class="w-[120px] border rounded-md px-2 py-1.5">
-								<option>None</option>
-								<option>Lv.1</option><option>Lv.2</option><option>Lv.3</option><option>Lv.4</option><option>Lv.5</option>
-								<option>Lv.6</option><option>Lv.7</option><option>Lv.8</option><option>Lv.9</option><option>Lv.10</option>
-							</select>
-							<!-- ✅ 레벨 설명 표시 영역 -->
-							<span id="expertDesc" class="svs-score-value text-sm font-semibold hidden px-4"></span>
+		<!-- ===================== 📙 마스터리 ===================== -->
+		<form id="masteryForm" class="space-y-3">
+			<div class="mb-4 flex items-center justify-start gap-2 w-full">
+				<label class="text-sm font-medium whitespace-nowrap">발레리아</label>
+				<select id="chkExpertV" class="w-[120px] border rounded-md px-2 py-1.5">
+					<option>None</option>
+					<option>Lv.1</option><option>Lv.2</option><option>Lv.3</option><option>Lv.4</option><option>Lv.5</option>
+					<option>Lv.6</option><option>Lv.7</option><option>Lv.8</option><option>Lv.9</option><option>Lv.10</option>
+				</select>
+				<!-- ✅ 레벨 설명 표시 영역 -->
+				<span id="expertDesc" class="svs-score-value text-sm font-semibold hidden px-4"></span>
+			</div>
+
+			<div id="masteryGrid" class="grid grid-cols-1 md:grid-cols-4 gap-2"></div>
+
+			<!-- 📙 마스터리 총합계 -->
+			<div id="masteryTotals">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+
+					<div class="rounded-xl border border-black/10 p-3">
+						<div class="font-semibold mb-2">필요 총합</div>
+
+						<div class="grid items-center text-[12px]
+												gap-x-3 gap-y-1
+												grid-cols-[auto_minmax(0,1fr)_auto_minmax(0,1fr)] w-full">
+
+							<div class="text-gray-600">마스터리석</div>
+							<div id="ms-tot-stone" class="tabular-nums font-medium text-right">0</div>
+							<div class="text-gray-600">레전드장비</div>
+							<div id="ms-tot-leg" class="tabular-nums font-medium text-right">0</div>
+
+							<div class="col-span-4 border-t border-gray-200 mt-1"></div>
+
+							<div class="svs-score-label pt-1">SVS 점수</div>
+							<span id="svs-long"  class="pt-1 svs-score-value text-right tabular-nums font-medium">0</span>
+							<div></div>
+							<span id="svs-short" class="pt-1 svs-score-value text-right tabular-nums font-medium">0</span>
 						</div>
+					</div>
 
-						<div id="masteryGrid" class="grid grid-cols-1 md:grid-cols-4 gap-2"></div>
+					<!-- ✅ 미스릴과 동일: 총합계산 버튼 -->
+					<div class="md:col-span-3">
+						<button id="btnCalc" type="button"
+							class="w-full px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
+							총합계산
+						</button>
+					</div>
 
-						<!-- 📙 마스터리 총합계 -->
-						<div id="masteryTotals">
-							<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-
-								<div class="rounded-xl border border-black/10 p-3">
-									<div class="font-semibold mb-2">필요 총합</div>
-
-									<div class="grid items-center text-[12px]
-															gap-x-3 gap-y-1
-															grid-cols-[auto_minmax(0,1fr)_auto_minmax(0,1fr)] w-full">
-
-										<div class="text-gray-600">마스터리석</div>
-										<div id="ms-tot-stone" class="tabular-nums font-medium text-right">0</div>
-										<div class="text-gray-600">레전드장비</div>
-										<div id="ms-tot-leg" class="tabular-nums font-medium text-right">0</div>
-
-										<div class="col-span-4 border-t border-gray-200 mt-1"></div>
-
-										<div class="svs-score-label pt-1">SVS 점수</div>
-										<span id="svs-long"  class="pt-1 svs-score-value text-right tabular-nums font-medium">0</span>
-										<div></div>
-										<span id="svs-short" class="pt-1 svs-score-value text-right tabular-nums font-medium">0</span>
-									</div>
-								</div>
-
-								<!-- ✅ 미스릴과 동일: 총합계산 버튼 -->
-								<div class="md:col-span-3">
-									<button id="btnCalc" type="button"
-										class="w-full px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
-										총합계산
-									</button>
-								</div>
-
-							</div>
-						</div>
-					</form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
+				</div>
+			</div>
+		</form>
+	</div>
   <script>
     fetch("nav.html")
       .then(r => r.text())

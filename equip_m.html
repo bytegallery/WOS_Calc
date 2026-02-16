@@ -18,62 +18,52 @@
   <script src="js/common.js"></script>
 </head>
 
-<body>
-  <div class="max-w-[1500px] mx-auto bg-white rounded shadow p-2 flex flex-col sm:flex-row gap-2">
-    <div class="flex-1 bg-white rounded p-2 space-y-4 shadow">
-      <div class="bg-gray-100 p-2 font-sans text-sm">
-        <div class="bg-white p-4 rounded-xl shadow-md space-y-4">
+<body class="bg-gray-100 p-3 font-sans text-sm">
+  <main class="w-full mx-auto bg-white p-2 rounded-xl shadow-md">
+		<h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-800">🛡️ 장비 계산기</h1>
+		<div class="text-gray-600 text-sm mt-1 space-y-1">
+			<p>이 페이지는 현재 보유 중인 영주장비 등급과 목표하는 등급을 선택하면,</p>
+			<p>업그레이드에 필요한 자원(합금, 설계도면, 광택제, 달빛엠버 등)의 총 수량을 계산할 수 있습니다.</p>
+			<p>장비는 최대 6개까지 선택이 가능하며, 체크한 장비만 합산하여 총합이 표시됩니다.</p>
+			<p>각 항목의 ‘필요 합계’는 레벨 선택 시 자동 갱신됩니다. (표시는 숨김 처리)</p>
+			<p>총합은 “총합계산” 버튼 클릭 시에만 계산됩니다.</p>
+		</div>
 
-          <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-800">🛡️ 장비 계산기</h1>
+		<form id="gearForm" class="space-y-3">
+			<!-- ✅ 카드형 UI -->
+			<div id="gearTableBody" class="grid grid-cols-1 md:grid-cols-3 gap-2"></div>
 
-          <div class="text-gray-600 text-sm mt-1 space-y-1">
-            <p>이 페이지는 현재 보유 중인 영주장비 등급과 목표하는 등급을 선택하면,</p>
-            <p>업그레이드에 필요한 자원(합금, 설계도면, 광택제, 달빛엠버 등)의 총 수량을 계산할 수 있습니다.</p>
-            <p>장비는 최대 6개까지 선택이 가능하며, 체크한 장비만 합산하여 총합이 표시됩니다.</p>
-            <p>각 항목의 ‘필요 합계’는 레벨 선택 시 자동 갱신됩니다. (표시는 숨김 처리)</p>
-            <p>총합은 “총합계산” 버튼 클릭 시에만 계산됩니다.</p>
-          </div>
+			<!-- ✅ 총합 패널(코드2 스타일) -->
+			<div id="gearTotals">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+					<div class="rounded-xl border border-black/10 p-3">
+						<div class="font-semibold text-gray-800 mb-2">필요 총합</div>
+						<div class="grid items-center text-[12px]
+												gap-x-3 gap-y-1
+												grid-cols-[auto_minmax(0,1fr)_auto_minmax(0,1fr)]">
 
-          <form id="gearForm" class="space-y-3">
-            <!-- ✅ 카드형 UI -->
-            <div id="gearTableBody" class="grid grid-cols-1 md:grid-cols-3 gap-2"></div>
+							<div class="text-gray-600">합금</div>
+							<div id="tot-alloy" class="text-right tabular-nums">0</div>
+							<div class="text-gray-600">설계도면</div>
+							<div id="tot-blueprint" class="text-right tabular-nums">0</div>
 
-            <!-- ✅ 총합 패널(코드2 스타일) -->
-            <div id="gearTotals">
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div class="rounded-xl border border-black/10 p-3">
-                  <div class="font-semibold text-gray-800 mb-2">필요 총합</div>
-                  <div class="grid items-center text-[12px]
-                              gap-x-3 gap-y-1
-                              grid-cols-[auto_minmax(0,1fr)_auto_minmax(0,1fr)]">
+							<div class="text-gray-600">광택제</div>
+							<div id="tot-polish" class="text-right tabular-nums">0</div>
+							<div class="text-gray-600">달빛앰버</div>
+							<div id="tot-amber" class="text-right tabular-nums">0</div>
+						</div>
+					</div>
 
-                    <div class="text-gray-600">합금</div>
-                    <div id="tot-alloy" class="text-right tabular-nums">0</div>
-                    <div class="text-gray-600">설계도면</div>
-                    <div id="tot-blueprint" class="text-right tabular-nums">0</div>
-
-                    <div class="text-gray-600">광택제</div>
-                    <div id="tot-polish" class="text-right tabular-nums">0</div>
-                    <div class="text-gray-600">달빛앰버</div>
-                    <div id="tot-amber" class="text-right tabular-nums">0</div>
-                  </div>
-                </div>
-
-                <div class="flex justify-end mt-2">
-                  <button id="btnCalc" type="button"
-                          class="w-full px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
-                    총합계산
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
+					<div class="flex justify-end mt-2">
+						<button id="btnCalc" type="button"
+										class="w-full px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
+							총합계산
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</main>
   <!-- ========== 공통 유틸 & 프레임 통신 ========== -->
   <script>
     function sendHeightToParent() {
@@ -82,7 +72,7 @@
     }
 
     window.addEventListener("load", () => {
-      setTimeout(sendHeightToParent, 100);
+      setTimeout(sendHeightToParent, 10);
     });
   </script>
 
