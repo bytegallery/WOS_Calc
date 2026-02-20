@@ -478,6 +478,9 @@
     ['ownedUnits','perPromoQty','ownedSpeedup','perPromoTime'].forEach(id=>{
       document.getElementById(id).addEventListener('input',()=>{ clearTimeout(window.__deb); window.__deb=setTimeout(calc,150); });
     });
+
+    window.calculateTraining = calculateTraining;
+    window.handleExclusiveCheck = handleExclusiveCheck;
   };
   window.TroopInit();
 })();
